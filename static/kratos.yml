@@ -1,0 +1,97 @@
+version: v0.8.2-alpha.1
+
+dsn: postgres://localuser:password@database:5432/wawed?sslmode=disable&max_conns=20
+
+serve:
+  public:
+    base_url: http://ui.my-app.com:8081/.ory
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://*.my-app.com:8081
+      allowed_methods:
+        - GET
+        - POST
+      allowed_headers:
+        - Authorization
+        - Cookie
+        - Content-Type
+        - X-Content-Type-Options
+      exposed_headers:
+        - Content-Type
+        - Set-Cookie
+  admin:
+    base_url: http://ui.my-app.com:4434/.ory
+
+selfservice:
+  default_browser_return_url: http://ui.my-app.com:8081/
+  whitelisted_return_urls:
+    - http://ui.my-app.com:8081
+
+  methods:
+    password:
+      enabled: true
+
+  flows:
+    error:
+      ui_url: http://ui.my-app.com:8081/error
+
+    settings:
+      ui_url: http://ui.my-app.com:8081/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: http://ui.my-app.com:8081/recovery
+
+    verification:
+      enabled: true
+      ui_url: http://ui.my-app.com:8081/verification
+      after:
+        default_browser_return_url: http://ui.my-app.com:8081/
+
+    logout:
+      after:
+        default_browser_return_url: http://ui.my-app.com:8081/login
+
+    login:
+      ui_url: http://ui.my-app.com:8081/login
+      lifespan: 10m
+
+    registration:
+      lifespan: 10m
+      ui_url: http://ui.my-app.com:8081/registration
+#      after:
+#        password:
+#          default_browser_return_url: http://ui.my-app.com:8081/dashboard
+#          hooks:
+#            - hook: session
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+  cipher:
+    - 32-LONG-SECRET-NOT-SECURE-AT-ALL
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  algorithm: argon2
+
+identity:
+  default_schema_url: file:///home/ory/identity.traits.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+
+cookies:
+  path: ''
+  same_site: None
+  domain: 'ui.my-app.com'

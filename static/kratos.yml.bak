@@ -1,0 +1,1536 @@
+identity:
+  default_schema_url: file:///home/ory/identity.traits.schema.json
+
+dsn: "postgres://localuser:password@database:5432/wawed?sslmode=disable&max_conns=20"
+
+selfservice:
+  default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+  flows:
+    logout:
+      after:
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+    registration:
+      lifespan: 1h
+
+      #      before:
+      #        hooks:
+      #          - hook: web_hook
+      #            config:
+      #              url: http://a.aaa
+      #              method: ''
+      #              auth:
+      #                type: api_key
+      #                config:
+      #                  name: ''
+      #                  value: ''
+      #                  in: header
+      #              body: file:///path/to/body.jsonnet
+
+      after:
+        password:
+          hooks:
+            - hook: session
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        oidc:
+          hooks:
+            - hook: session
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        #        hooks:
+        #          - hook: web_hook
+        #            config:
+        #              url: http://a.aaa
+        #              method: ''
+        #              auth:
+        #                type: api_key
+        #                config:
+        #                  name: ''
+        #                  value: ''
+        #                  in: header
+        #              body: file:///path/to/body.jsonnet
+
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+      ui_url: http://ui.my-app.com:4000/registration
+
+    login:
+      lifespan: 1h
+
+#      before:
+#        hooks:
+#          - hook: web_hook
+#            config:
+#              url: http://a.aaa
+#              method: ''
+#              auth:
+#                type: api_key
+#                config:
+#                  name: ''
+#                  value: ''
+#                  in: header
+#              body: file:///path/to/body.jsonnet
+
+      after:
+        password:
+          hooks:
+            - hook: revoke_active_sessions
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        oidc:
+          hooks:
+            - hook: revoke_active_sessions
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        #        hooks:
+        #          - hook: web_hook
+        #            config:
+        #              url: http://a.aaa
+        #              method: ''
+        #              auth:
+        #                type: api_key
+        #                config:
+        #                  name: ''
+        #                  value: ''
+        #                  in: header
+        #              body: file:///path/to/body.jsonnet
+
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+      ui_url: http://ui.my-app.com:4000/login
+
+    verification:
+      ui_url: http://ui.my-app.com:4000/verify
+
+      after:
+        #        hooks:
+        #          - hook: web_hook
+        #            config:
+        #              url: http://a.aaa
+        #              method: ''
+        #              auth:
+        #                type: api_key
+        #                config:
+        #                  name: ''
+        #                  value: ''
+        #                  in: header
+        #              body: file:///path/to/body.jsonnet
+
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+      lifespan: 1h
+
+      enabled: false
+
+    recovery:
+      ui_url: http://ui.my-app.com:4000/verify
+
+      after:
+        #        hooks:
+        #          - hook: web_hook
+        #            config:
+        #              url: http://a.aaa
+        #              method: ''
+        #              auth:
+        #                type: api_key
+        #                config:
+        #                  name: ''
+        #                  value: ''
+        #                  in: header
+        #              body: file:///path/to/body.jsonnet
+
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+      lifespan: 1h
+
+      enabled: false
+
+    error:
+      ui_url: http://ui.my-app.com:4000/kratos-error
+
+    settings:
+      lifespan: 1h
+
+      privileged_session_max_age: 1h
+
+      required_aal: aal1
+
+      after:
+        password:
+          #          hooks:
+          #            - hook: web_hook
+          #              config:
+          #                url: http://a.aaa
+          #                method: ''
+          #                auth:
+          #                  type: api_key
+          #                  config:
+          #                    name: ''
+          #                    value: ''
+          #                    in: header
+          #                body: file:///path/to/body.jsonnet
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        profile:
+          #          hooks:
+          #            - hook: web_hook
+          #              config:
+          #                url: http://a.aaa
+          #                method: ''
+          #                auth:
+          #                  type: api_key
+          #                  config:
+          #                    name: ''
+          #                    value: ''
+          #                    in: header
+          #                body: file:///path/to/body.jsonnet
+
+          default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+        #        hooks:
+        #          - hook: web_hook
+        #            config:
+        #              url: http://a.aaa
+        #              method: ''
+        #              auth:
+        #                type: api_key
+        #                config:
+        #                  name: ''
+        #                  value: ''
+        #                  in: header
+        #              body: file:///path/to/body.jsonnet
+
+        default_browser_return_url: http://ui.my-app.com:4000/welcome
+
+      ui_url: http://ui.my-app.com:4000/user/settings
+
+  methods:
+    link:
+      config:
+        lifespan: 1h
+
+      enabled: false
+
+    password:
+      config:
+        haveibeenpwned_enabled: false
+
+        max_breaches: 0
+
+        ignore_network_errors: false
+
+        haveibeenpwned_host: ''
+
+      enabled: true
+
+    totp:
+      config:
+        issuer: ''
+
+      enabled: false
+
+    lookup_secret:
+      enabled: false
+
+    webauthn:
+      config:
+        rp:
+          id: ui.my-app.com
+
+          display_name: Self Login
+
+          icon: http://www.ory.sh/an-icon.png
+
+          origin: http://ui.my-app.com:4000/login
+
+      enabled: false
+
+    profile:
+      enabled: false
+
+  ## Whitelisted Return To URLs ##
+  #
+  # List of URLs that are allowed to be redirected to. A redirection request is made by appending `?return_to=...` to Login, Registration, and other self-service flows.
+  #
+  # Examples:
+  # - - http://app.my-app.com:4000/dashboard
+  #   - /dashboard
+  #   - http://www.my-app.com:4000/
+  #   - http://*.my-app.com:4000/
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export SELFSERVICE_WHITELISTED_RETURN_URLS=<value>
+  # - Windows Command Line (CMD):
+  #    > set SELFSERVICE_WHITELISTED_RETURN_URLS=<value>
+  #
+  whitelisted_return_urls:
+    - http://ui.my-app.com:4000/dashboard
+    - /dashboard
+    - http://www.my-app.com:4000/
+    - http://*.my-app.com:4000/
+
+## serve ##
+#
+serve:
+  ## public ##
+  #
+  public:
+    ## Base URL ##
+    #
+    # The URL where the endpoint is exposed at. This domain is used to generate redirects, form URLs, and more.
+    #
+    # Examples:
+    # - http://my-app.com:4000/
+    # - http://my-app.com:4000/.ory/kratos/public
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_PUBLIC_BASE_URL=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_PUBLIC_BASE_URL=<value>
+    #
+    base_url: http://ui.my-app.com:4000/.ory/
+
+    ## Domain Aliases ##
+    #
+    # Adds an alias domain. If a request with the hostname (FQDN) matching the hostname in the alias is found, that URL is used as the base URL.
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_PUBLIC_DOMAIN_ALIASES=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_PUBLIC_DOMAIN_ALIASES=<value>
+    #
+    domain_aliases:
+      - match_domain: kratos.my-app.com:4433
+        base_path: /api/kratos/public/
+        scheme: http
+      - match_domain: kratos:4433
+        base_path: /api/kratos/public/
+        scheme: http
+
+    ## Public Host ##
+    #
+    # The host (interface) kratos' public endpoint listens on.
+    #
+    # Default value: 0.0.0.0
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_PUBLIC_HOST=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_PUBLIC_HOST=<value>
+    #
+    host: '0.0.0.0'
+
+    ## Public Port ##
+    #
+    # The port kratos' public endpoint listens on.
+    #
+    # Default value: 4433
+    #
+    # Minimum value: 1
+    #
+    # Maximum value: 65535
+    #
+    # Examples:
+    # - 4433
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_PUBLIC_PORT=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_PUBLIC_PORT=<value>
+    #
+    port: 4433
+
+    ## socket ##
+    #
+    # Sets the permissions of the unix socket
+    #
+    socket:
+      ## group ##
+      #
+      # Group of unix socket. If empty, the group will be the primary group of the user running Kratos.
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_SOCKET_GROUP=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_SOCKET_GROUP=<value>
+      #
+      group: ''
+
+      ## mode ##
+      #
+      # Mode of unix socket in numeric form
+      #
+      # Default value: 493
+      #
+      # Minimum value: 0
+      #
+      # Maximum value: 511
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_SOCKET_MODE=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_SOCKET_MODE=<value>
+      #
+      mode: 0
+
+      ## owner ##
+      #
+      # Owner of unix socket. If empty, the owner will be the user running Kratos.
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_SOCKET_OWNER=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_SOCKET_OWNER=<value>
+      #
+      owner: ''
+
+        ## HTTPS ##
+        #
+        # Configure HTTP over TLS (HTTPS). All options can also be set using environment variables by replacing dots (`.`) with underscores (`_`) and uppercasing the key. For example, `some.prefix.tls.key.path` becomes `export SOME_PREFIX_TLS_KEY_PATH`. If all keys are left undefined, TLS will be disabled.
+        #
+        #    tls:
+        ## TLS Certificate (PEM) ##
+        #
+        #      cert:
+        ## base64 ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_PUBLIC_TLS_CERT_BASE64=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_PUBLIC_TLS_CERT_BASE64=<value>
+        #
+        #        base64: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tXG5NSUlEWlRDQ0FrMmdBd0lCQWdJRVY1eE90REFOQmdr...
+
+        ## path ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_PUBLIC_TLS_CERT_PATH=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_PUBLIC_TLS_CERT_PATH=<value>
+        #
+        #        path: path/to/file.pem
+
+        ## Private Key (PEM) ##
+        #
+        #      key:
+        ## base64 ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_PUBLIC_TLS_KEY_BASE64=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_PUBLIC_TLS_KEY_BASE64=<value>
+        #
+        #        base64: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tXG5NSUlEWlRDQ0FrMmdBd0lCQWdJRVY1eE90REFOQmdr...
+
+        ## path ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_PUBLIC_TLS_KEY_PATH=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_PUBLIC_TLS_KEY_PATH=<value>
+      #
+    #        path: path/to/file.pem
+
+    ## cors ##
+    #
+    # Configures Cross Origin Resource Sharing for public endpoints.
+    #
+    cors:
+      ## allowed_origins ##
+      #
+      # A list of origins a cross-domain request can be executed from. If the special * value is present in the list, all origins will be allowed. An origin may contain a wildcard (*) to replace 0 or more characters (i.e.: http://*.domain.com). Only one wildcard can be used per origin.
+      #
+      # Default value: *
+      #
+      # Examples:
+      # - - http://example.com
+      #   - http://*.example.com
+      #   - http://*.foo.example.com
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_ALLOWED_ORIGINS=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_ALLOWED_ORIGINS=<value>
+      #
+      allowed_origins:
+        - http://my-app.com
+        - http://*.my-app.com
+
+      ## allowed_methods ##
+      #
+      # A list of HTTP methods the user agent is allowed to use with cross-domain requests.
+      #
+      # Default value: POST,GET,PUT,PATCH,DELETE
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_ALLOWED_METHODS=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_ALLOWED_METHODS=<value>
+      #
+      allowed_methods:
+        - POST
+
+      ## allowed_headers ##
+      #
+      # A list of non simple headers the client is allowed to use with cross-domain requests.
+      #
+      # Default value: Authorization,Content-Type,X-Session-Token
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_ALLOWED_HEADERS=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_ALLOWED_HEADERS=<value>
+      #
+      allowed_headers:
+        - ''
+
+      ## exposed_headers ##
+      #
+      # Sets which headers are safe to expose to the API of a CORS API specification.
+      #
+      # Default value: Content-Type
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_EXPOSED_HEADERS=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_EXPOSED_HEADERS=<value>
+      #
+      exposed_headers:
+        - ''
+
+      ## allow_credentials ##
+      #
+      # Sets whether the request can include user credentials like cookies, HTTP authentication or client side SSL certificates.
+      #
+      # Default value: true
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_ALLOW_CREDENTIALS=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_ALLOW_CREDENTIALS=<value>
+      #
+      allow_credentials: false
+
+      ## options_passthrough ##
+      #
+      # TODO
+      #
+      # Default value: false
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_OPTIONS_PASSTHROUGH=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_OPTIONS_PASSTHROUGH=<value>
+      #
+      options_passthrough: false
+
+      ## max_age ##
+      #
+      # Sets how long (in seconds) the results of a preflight request can be cached. If set to 0, every request is preceded by a preflight request.
+      #
+      # Minimum value: 0
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_MAX_AGE=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_MAX_AGE=<value>
+      #
+      max_age: 0
+
+      ## debug ##
+      #
+      # Adds additional log output to debug server side CORS issues.
+      #
+      # Default value: false
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_DEBUG=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_DEBUG=<value>
+      #
+      debug: true
+
+      ## enabled ##
+      #
+      # Sets whether CORS is enabled.
+      #
+      # Default value: false
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_PUBLIC_CORS_ENABLED=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_PUBLIC_CORS_ENABLED=<value>
+      #
+      enabled: false
+
+  ## admin ##
+  #
+  admin:
+    ## Admin Host ##
+    #
+    # The host (interface) kratos' admin endpoint listens on.
+    #
+    # Default value: 0.0.0.0
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_ADMIN_HOST=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_ADMIN_HOST=<value>
+    #
+    host: '0.0.0.0'
+
+    ## Admin Port ##
+    #
+    # The port kratos' admin endpoint listens on.
+    #
+    # Default value: 4434
+    #
+    # Minimum value: 1
+    #
+    # Maximum value: 65535
+    #
+    # Examples:
+    # - 4434
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_ADMIN_PORT=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_ADMIN_PORT=<value>
+    #
+    port: 4434
+
+    ## socket ##
+    #
+    # Sets the permissions of the unix socket
+    #
+    socket:
+      ## group ##
+      #
+      # Group of unix socket. If empty, the group will be the primary group of the user running Kratos.
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_ADMIN_SOCKET_GROUP=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_ADMIN_SOCKET_GROUP=<value>
+      #
+      group: ''
+
+      ## mode ##
+      #
+      # Mode of unix socket in numeric form
+      #
+      # Default value: 493
+      #
+      # Minimum value: 0
+      #
+      # Maximum value: 511
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_ADMIN_SOCKET_MODE=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_ADMIN_SOCKET_MODE=<value>
+      #
+      mode: 0
+
+      ## owner ##
+      #
+      # Owner of unix socket. If empty, the owner will be the user running Kratos.
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export SERVE_ADMIN_SOCKET_OWNER=<value>
+      # - Windows Command Line (CMD):
+      #    > set SERVE_ADMIN_SOCKET_OWNER=<value>
+      #
+      owner: ''
+
+        ## HTTPS ##
+        #
+        # Configure HTTP over TLS (HTTPS). All options can also be set using environment variables by replacing dots (`.`) with underscores (`_`) and uppercasing the key. For example, `some.prefix.tls.key.path` becomes `export SOME_PREFIX_TLS_KEY_PATH`. If all keys are left undefined, TLS will be disabled.
+        #
+        #    tls:
+        ## TLS Certificate (PEM) ##
+        #
+        #      cert:
+        ## base64 ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_ADMIN_TLS_CERT_BASE64=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_ADMIN_TLS_CERT_BASE64=<value>
+        #
+        #        base64: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tXG5NSUlEWlRDQ0FrMmdBd0lCQWdJRVY1eE90REFOQmdr...
+
+        ## path ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_ADMIN_TLS_CERT_PATH=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_ADMIN_TLS_CERT_PATH=<value>
+        #
+        #        path: path/to/file.pem
+
+        ## Private Key (PEM) ##
+        #
+        #      key:
+        ## base64 ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_ADMIN_TLS_KEY_BASE64=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_ADMIN_TLS_KEY_BASE64=<value>
+        #
+        #        base64: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tXG5NSUlEWlRDQ0FrMmdBd0lCQWdJRVY1eE90REFOQmdr...
+
+        ## path ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export SERVE_ADMIN_TLS_KEY_PATH=<value>
+        # - Windows Command Line (CMD):
+        #    > set SERVE_ADMIN_TLS_KEY_PATH=<value>
+      #
+    #        path: path/to/file.pem
+
+    ## Admin Base URL ##
+    #
+    # The URL where the admin endpoint is exposed at.
+    #
+    # Examples:
+    # - http://kratos.private-network:4434/
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SERVE_ADMIN_BASE_URL=<value>
+    # - Windows Command Line (CMD):
+    #    > set SERVE_ADMIN_BASE_URL=<value>
+    #
+    base_url: http://kratos.my-app.com:4434/
+
+## tracing ##
+#
+# Ory Kratos supports distributed tracing.
+#
+tracing:
+  ## service_name ##
+  #
+  # Specifies the service name to use on the tracer.
+  #
+  # Examples:
+  # - Ory Kratos
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export TRACING_SERVICE_NAME=<value>
+  # - Windows Command Line (CMD):
+  #    > set TRACING_SERVICE_NAME=<value>
+  #
+  service_name: Ory Kratos
+
+  ## providers ##
+  #
+  providers:
+    ## zipkin ##
+    #
+    # Configures the zipkin tracing backend.
+    #
+    # Examples:
+    # - server_url: http://localhost:9411/api/v2/spans
+    #
+    zipkin:
+      ## server_url ##
+      #
+      # The address of Zipkin server where spans should be sent to.
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export TRACING_PROVIDERS_ZIPKIN_SERVER_URL=<value>
+      # - Windows Command Line (CMD):
+      #    > set TRACING_PROVIDERS_ZIPKIN_SERVER_URL=<value>
+      #
+      server_url: http://localhost:9411/api/v2/spans
+
+    ## jaeger ##
+    #
+    # Configures the jaeger tracing backend.
+    #
+    jaeger:
+      ## propagation ##
+      #
+      # The tracing header format
+      #
+      # Examples:
+      # - jaeger
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export TRACING_PROVIDERS_JAEGER_PROPAGATION=<value>
+      # - Windows Command Line (CMD):
+      #    > set TRACING_PROVIDERS_JAEGER_PROPAGATION=<value>
+      #
+      propagation: jaeger
+
+      ## sampling ##
+      #
+      # Examples:
+      # - type: const
+      #   value: 1
+      #   server_url: http://localhost:5778/sampling
+      #
+      sampling:
+        ## type ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export TRACING_PROVIDERS_JAEGER_SAMPLING_TYPE=<value>
+        # - Windows Command Line (CMD):
+        #    > set TRACING_PROVIDERS_JAEGER_SAMPLING_TYPE=<value>
+        #
+        type: const
+
+        ## value ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export TRACING_PROVIDERS_JAEGER_SAMPLING_VALUE=<value>
+        # - Windows Command Line (CMD):
+        #    > set TRACING_PROVIDERS_JAEGER_SAMPLING_VALUE=<value>
+        #
+        value: 1
+
+        ## server_url ##
+        #
+        # Set this value using environment variables on
+        # - Linux/macOS:
+        #    $ export TRACING_PROVIDERS_JAEGER_SAMPLING_SERVER_URL=<value>
+        # - Windows Command Line (CMD):
+        #    > set TRACING_PROVIDERS_JAEGER_SAMPLING_SERVER_URL=<value>
+        #
+        server_url: http://mailslurper:4436/sampling
+
+      ## local_agent_address ##
+      #
+      # The address of the jaeger-agent where spans should be sent to.
+      #
+      # Examples:
+      # - 127.0.0.1:6831
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export TRACING_PROVIDERS_JAEGER_LOCAL_AGENT_ADDRESS=<value>
+      # - Windows Command Line (CMD):
+      #    > set TRACING_PROVIDERS_JAEGER_LOCAL_AGENT_ADDRESS=<value>
+      #
+      local_agent_address: 127.0.0.1:6831
+
+  ## provider ##
+  #
+  # Set this to the tracing backend you wish to use. Supports Jaeger, Zipkin, DataDog, elastic-apm and instana. If omitted or empty, tracing will be disabled. Use environment variables to configure DataDog (see http://docs.datadoghq.com/tracing/setup/go/#configuration).
+  #
+  # One of:
+  # - jaeger
+  # - zipkin
+  # - datadog
+  # - elastic-apm
+  # - instana
+  #
+  # Examples:
+  # - jaeger
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export TRACING_PROVIDER=<value>
+  # - Windows Command Line (CMD):
+  #    > set TRACING_PROVIDER=<value>
+  #
+  provider: jaeger
+
+## Log ##
+#
+# Configure logging using the following options. Logging will always be sent to stdout and stderr.
+#
+log:
+  ## Leak Sensitive Log Values ##
+  #
+  # If set will leak sensitive values (e.g. emails) in the logs.
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export LOG_LEAK_SENSITIVE_VALUES=<value>
+  # - Windows Command Line (CMD):
+  #    > set LOG_LEAK_SENSITIVE_VALUES=<value>
+  #
+  leak_sensitive_values: false
+
+  ## format ##
+  #
+  # The log format can either be text or JSON.
+  #
+  # One of:
+  # - json
+  # - text
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export LOG_FORMAT=<value>
+  # - Windows Command Line (CMD):
+  #    > set LOG_FORMAT=<value>
+  #
+  format: json
+
+  ## level ##
+  #
+  # Debug enables stack traces on errors. Can also be set using environment variable LOG_LEVEL.
+  #
+  # Default value: info
+  #
+  # One of:
+  # - trace
+  # - debug
+  # - info
+  # - warning
+  # - error
+  # - fatal
+  # - panic
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export LOG_LEVEL=<value>
+  # - Windows Command Line (CMD):
+  #    > set LOG_LEVEL=<value>
+  #
+  level: debug
+
+## secrets ##
+#
+secrets:
+  ## Signing Keys for Cookies ##
+  #
+  # The first secret in the array is used for encrypting cookies while all other keys are used to decrypt older cookies that were signed with that old secret.
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export SECRETS_COOKIE=<value>
+  # - Windows Command Line (CMD):
+  #    > set SECRETS_COOKIE=<value>
+  #
+  cookie:
+    - ipsumipsumipsumi
+
+  ## Secrets to use for encryption by cipher ##
+  #
+  # The first secret in the array is used for encryption data while all other keys are used to decrypt older data that were signed with.
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export SECRETS_CIPHER=<value>
+  # - Windows Command Line (CMD):
+  #    > set SECRETS_CIPHER=<value>
+  #
+  cipher:
+    - ipsumipsumipsumipsumipsumipsumip
+
+  ## Default Encryption Signing Secrets ##
+  #
+  # The first secret in the array is used for signing and encrypting things while all other keys are used to verify and decrypt older things that were signed with that old secret.
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export SECRETS_DEFAULT=<value>
+  # - Windows Command Line (CMD):
+  #    > set SECRETS_DEFAULT=<value>
+  #
+  default:
+    - ipsumipsumipsumi
+
+## Hashing Algorithm Configuration ##
+#
+hashers:
+  ## Configuration for the Argon2id hasher. ##
+  #
+  argon2:
+    ## iterations ##
+    #
+    # Default value: 1
+    #
+    # Minimum value: 1
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_ITERATIONS=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_ITERATIONS=<value>
+    #
+    iterations: 1
+
+    ## parallelism ##
+    #
+    # Number of parallel workers, defaults to 2*runtime.NumCPU().
+    #
+    # Minimum value: 1
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_PARALLELISM=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_PARALLELISM=<value>
+    #
+    parallelism: 1
+
+    ## salt_length ##
+    #
+    # Default value: 16
+    #
+    # Minimum value: 16
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_SALT_LENGTH=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_SALT_LENGTH=<value>
+    #
+    salt_length: 16
+
+    ## key_length ##
+    #
+    # Default value: 32
+    #
+    # Minimum value: 16
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_KEY_LENGTH=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_KEY_LENGTH=<value>
+    #
+    key_length: 16
+
+    ## expected_duration ##
+    #
+    # The time a hashing operation (~login latency) should take.
+    #
+    # Default value: 500ms
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_EXPECTED_DURATION=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_EXPECTED_DURATION=<value>
+    #
+    expected_duration: 0ns
+
+    ## expected_deviation ##
+    #
+    # The standard deviation expected for hashing operations. If this value is exceeded you will be warned in the logs to adjust the parameters.
+    #
+    # Default value: 500ms
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_EXPECTED_DEVIATION=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_EXPECTED_DEVIATION=<value>
+    #
+    expected_deviation: 0ns
+
+    ## dedicated_memory ##
+    #
+    # The memory dedicated for Kratos. As password hashing is very resource intense, Kratos will monitor the memory consumption and warn about high values.
+    #
+    # Default value: 1GB
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_DEDICATED_MEMORY=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_DEDICATED_MEMORY=<value>
+    #
+    dedicated_memory: 0B
+
+    ## memory ##
+    #
+    # Default value: 128MB
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_ARGON2_MEMORY=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_ARGON2_MEMORY=<value>
+    #
+    memory: 0B
+
+  ## Configuration for the Bcrypt hasher. Minimum is 4 when --dev flag is used and 12 otherwise. ##
+  #
+  bcrypt:
+    ## cost ##
+    #
+    # Default value: 12
+    #
+    # Minimum value: 4
+    #
+    # Maximum value: 31
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export HASHERS_BCRYPT_COST=<value>
+    # - Windows Command Line (CMD):
+    #    > set HASHERS_BCRYPT_COST=<value>
+    #
+    cost: 12
+
+  ## Password hashing algorithm ##
+  #
+  # One of the values: argon2, bcrypt.
+  # Any other hashes will be migrated to the set algorithm once an identity authenticates using their password.
+  #
+  # Default value: bcrypt
+  #
+  # One of:
+  # - argon2
+  # - bcrypt
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export HASHERS_ALGORITHM=<value>
+  # - Windows Command Line (CMD):
+  #    > set HASHERS_ALGORITHM=<value>
+  #
+  algorithm: argon2
+
+## Cipher Algorithm Configuration ##
+#
+ciphers:
+  ## ciphering algorithm ##
+  #
+  # One of the values: noop, aes, xchacha20-poly1305
+  #
+  # Default value: noop
+  #
+  # One of:
+  # - noop
+  # - aes
+  # - xchacha20-poly1305
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export CIPHERS_ALGORITHM=<value>
+  # - Windows Command Line (CMD):
+  #    > set CIPHERS_ALGORITHM=<value>
+  #
+  algorithm: noop
+
+## HTTP Cookie Configuration ##
+#
+# Configure the HTTP Cookies. Applies to both CSRF and session cookies.
+#
+cookies:
+  ## HTTP  Cookie Path ##
+  #
+  # Sets the session and CSRF cookie path. Use with care!
+  #
+  # Default value: /
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export COOKIES_PATH=<value>
+  # - Windows Command Line (CMD):
+  #    > set COOKIES_PATH=<value>
+  #
+  path: ''
+
+  ## HTTP Cookie Same Site Configuration ##
+  #
+  # Sets the session and CSRF cookie SameSite.
+  #
+  # Default value: Lax
+  #
+  # One of:
+  # - Strict
+  # - Lax
+  # - None
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export COOKIES_SAME_SITE=<value>
+  # - Windows Command Line (CMD):
+  #    > set COOKIES_SAME_SITE=<value>
+  #
+  same_site: Lax
+
+  ## HTTP Cookie Domain ##
+  #
+  # Sets the cookie domain for session and CSRF cookies. Useful when dealing with subdomains. Use with care!
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export COOKIES_DOMAIN=<value>
+  # - Windows Command Line (CMD):
+  #    > set COOKIES_DOMAIN=<value>
+  #
+  domain: 'my-app.com'
+
+## session ##
+#
+session:
+  ## Session Lifespan ##
+  #
+  # Defines how long a session is active. Once that lifespan has been reached, the user needs to sign in again.
+  #
+  # Default value: 24h
+  #
+  # Examples:
+  # - 1h
+  # - 1m
+  # - 1s
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export SESSION_LIFESPAN=<value>
+  # - Windows Command Line (CMD):
+  #    > set SESSION_LIFESPAN=<value>
+  #
+  lifespan: 1h
+
+  ## cookie ##
+  #
+  cookie:
+    ## Session Cookie Name ##
+    #
+    # Sets the session cookie name. Use with care!
+    #
+    # Default value: ory_kratos_session
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_COOKIE_NAME=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_COOKIE_NAME=<value>
+    #
+    name: ''
+
+    ## Make Session Cookie Persistent ##
+    #
+    # If set to true will persist the cookie in the end-user's browser using the `max-age` parameter which is set to the `session.lifespan` value. Persistent cookies are not deleted when the browser is closed (e.g. on reboot or alt+f4).
+    #
+    # Default value: true
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_COOKIE_PERSISTENT=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_COOKIE_PERSISTENT=<value>
+    #
+    persistent: false
+
+    ## Session Cookie Path ##
+    #
+    # Sets the session cookie path. Use with care! Overrides `cookies.path`.
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_COOKIE_PATH=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_COOKIE_PATH=<value>
+    #
+    path: ''
+
+    ## Session Cookie SameSite Configuration ##
+    #
+    # Sets the session cookie SameSite. Overrides `cookies.same_site`.
+    #
+    # One of:
+    # - Strict
+    # - Lax
+    # - None
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_COOKIE_SAME_SITE=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_COOKIE_SAME_SITE=<value>
+    #
+    same_site: Lax
+
+    ## Session Cookie Domain ##
+    #
+    # Sets the session cookie domain. Useful when dealing with subdomains. Use with care! Overrides `cookies.domain`.
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_COOKIE_DOMAIN=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_COOKIE_DOMAIN=<value>
+    #
+    domain: 'my-app.com'
+
+  ## WhoAmI / ToSession Settings ##
+  #
+  # Control how the `/sessions/whoami` endpoint is behaving.
+  #
+  whoami:
+    ## Required Authenticator Assurance Level ##
+    #
+    # Sets what Authenticator Assurance Level (used for 2FA) is required to access this feature. If set to `highest_available` then this endpoint requires the highest AAL the identity has set up. If set to `aal1` then the identity can access this feature without 2FA.
+    #
+    # Default value: highest_available
+    #
+    # One of:
+    # - aal1
+    # - highest_available
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export SESSION_WHOAMI_REQUIRED_AAL=<value>
+    # - Windows Command Line (CMD):
+    #    > set SESSION_WHOAMI_REQUIRED_AAL=<value>
+    #
+    required_aal: aal1
+
+## The kratos version this config is written for. ##
+#
+# SemVer according to http://semver.org/ prefixed with `v` as in our releases.
+#
+# Examples:
+# - v0.5.0-alpha.1
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export VERSION=<value>
+# - Windows Command Line (CMD):
+#    > set VERSION=<value>
+#
+version: v0.8.2-alpha.1
+
+## dev ##
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export DEV=<value>
+# - Windows Command Line (CMD):
+#    > set DEV=<value>
+#
+dev: true
+
+## help ##
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export HELP=<value>
+# - Windows Command Line (CMD):
+#    > set HELP=<value>
+#
+help: true
+
+## sqa-opt-out ##
+#
+# This is a CLI flag and environment variable and can not be set using the config file.
+#
+# Default value: false
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export SQA-OPT-OUT=<value>
+# - Windows Command Line (CMD):
+#    > set SQA-OPT-OUT=<value>
+#
+sqa-opt-out: false
+
+## watch-courier ##
+#
+# This is a CLI flag and environment variable and can not be set using the config file.
+#
+# Default value: false
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export WATCH-COURIER=<value>
+# - Windows Command Line (CMD):
+#    > set WATCH-COURIER=<value>
+#
+watch-courier: false
+
+## Metrics port ##
+#
+# The port the courier's metrics endpoint listens on (0/disabled by default). This is a CLI flag and environment variable and can not be set using the config file.
+#
+# Minimum value: 0
+#
+# Maximum value: 65535
+#
+# Examples:
+# - 4434
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export EXPOSE-METRICS-PORT=<value>
+# - Windows Command Line (CMD):
+#    > set EXPOSE-METRICS-PORT=<value>
+#
+expose-metrics-port: 4434
+
+## config ##
+#
+# This is a CLI flag and environment variable and can not be set using the config file.
+#
+# Set this value using environment variables on
+# - Linux/macOS:
+#    $ export CONFIG=<value>
+# - Windows Command Line (CMD):
+#    > set CONFIG=<value>
+#
+config:
+  - ''
+
+## Courier configuration ##
+#
+# The courier is responsible for sending and delivering messages over email, sms, and other means.
+#
+courier:
+  ## SMTP Configuration ##
+  #
+  # Configures outgoing emails using the SMTP protocol.
+  #
+  smtp:
+    ## SMTP connection string ##
+    #
+    # This URI will be used to connect to the SMTP server. Use the scheme smtps for implicit TLS sessions or smtp for explicit StartTLS/cleartext sessions. Please note that TLS is always enforced with certificate trust verification by default for security reasons on both schemes. With the smtp scheme you can use the query parameter (`?disable_starttls=true`) to allow cleartext sessions or (`?disable_starttls=false`) to enforce StartTLS (default behaviour). Additionally, use the query parameter to allow (`?skip_ssl_verify=true`) or disallow (`?skip_ssl_verify=false`) self-signed TLS certificates (default behaviour) on both implicit and explicit TLS sessions.
+    #
+    # Examples:
+    # - smtps://foo:bar@my-mailserver:1234/?skip_ssl_verify=false
+    # - "smtp://foo:bar@my-mailserver:1234/?disable_starttls=true (NOT RECOMMENDED:
+    #   Cleartext smtp for devel and legacy infrastructure only)"
+    # - smtp://foo:bar@my-mailserver:1234/ (Explicit StartTLS with certificate trust
+    #   verification)
+    # - "smtp://foo:bar@my-mailserver:1234/?skip_ssl_verify=true (NOT RECOMMENDED:
+    #   Explicit StartTLS without certificate trust verification)"
+    # - smtps://foo:bar@my-mailserver:1234/ (Implicit TLS with certificate trust
+    #   verification)
+    # - "smtps://foo:bar@my-mailserver:1234/?skip_ssl_verify=true (NOT RECOMMENDED:
+    #   Implicit TLS without certificate trust verification)"
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export COURIER_SMTP_CONNECTION_URI=<value>
+    # - Windows Command Line (CMD):
+    #    > set COURIER_SMTP_CONNECTION_URI=<value>
+    #
+    connection_uri: smtps://foo:bar@my-mailserver:1234/?skip_ssl_verify=false
+
+    ## SMTP Sender Name ##
+    #
+    # The recipient of an email will see this as the sender name.
+    #
+    # Examples:
+    # - Bob
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export COURIER_SMTP_FROM_NAME=<value>
+    # - Windows Command Line (CMD):
+    #    > set COURIER_SMTP_FROM_NAME=<value>
+    #
+    from_name: Bob
+
+    ## SMTP Headers ##
+    #
+    # These headers will be passed in the SMTP conversation -- e.g. when using the AWS SES SMTP interface for cross-account sending.
+    #
+    # Examples:
+    # - X-SES-SOURCE-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+    #   X-SES-FROM-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+    #   X-SES-RETURN-PATH-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+    #
+    headers:
+      ## X-SES-SOURCE-ARN ##
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export COURIER_SMTP_HEADERS_X-SES-SOURCE-ARN=<value>
+      # - Windows Command Line (CMD):
+      #    > set COURIER_SMTP_HEADERS_X-SES-SOURCE-ARN=<value>
+      #
+      X-SES-SOURCE-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+
+      ## X-SES-FROM-ARN ##
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export COURIER_SMTP_HEADERS_X-SES-FROM-ARN=<value>
+      # - Windows Command Line (CMD):
+      #    > set COURIER_SMTP_HEADERS_X-SES-FROM-ARN=<value>
+      #
+      X-SES-FROM-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+
+      ## X-SES-RETURN-PATH-ARN ##
+      #
+      # Set this value using environment variables on
+      # - Linux/macOS:
+      #    $ export COURIER_SMTP_HEADERS_X-SES-RETURN-PATH-ARN=<value>
+      # - Windows Command Line (CMD):
+      #    > set COURIER_SMTP_HEADERS_X-SES-RETURN-PATH-ARN=<value>
+      #
+      X-SES-RETURN-PATH-ARN: arn:aws:ses:us-west-2:123456789012:identity/example.com
+
+    ## SMTP Sender Address ##
+    #
+    # The recipient of an email will see this as the sender address.
+    #
+    # Default value: no-reply@ory.kratos.sh
+    #
+    # Set this value using environment variables on
+    # - Linux/macOS:
+    #    $ export COURIER_SMTP_FROM_ADDRESS=<value>
+    # - Windows Command Line (CMD):
+    #    > set COURIER_SMTP_FROM_ADDRESS=<value>
+    #
+    from_address: aaa@a.aa
+
+  ## Override message templates ##
+  #
+  # You can override certain or all message templates by pointing this key to the path where the templates are located.
+  #
+  # Examples:
+  # - /conf/courier-templates
+  #
+  # Set this value using environment variables on
+  # - Linux/macOS:
+  #    $ export COURIER_TEMPLATE_OVERRIDE_PATH=<value>
+  # - Windows Command Line (CMD):
+  #    > set COURIER_TEMPLATE_OVERRIDE_PATH=<value>
+  #
+  template_override_path: /conf/courier-templates

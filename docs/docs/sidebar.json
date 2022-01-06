@@ -1,0 +1,73 @@
+[
+  "index",
+  "get-started",
+  {
+    "Ory Cloud": [
+      {
+        "Start Building": [
+          "start-building/create-project",
+          "start-building",
+          "start-building/ory-cli-install-use",
+          "start-building/server-side-web-app",
+          "start-building/single-page-app-spa",
+          "start-building/native-mobile-app",
+          "start-building/deploy-auth-production",
+          "start-building/other-languages"
+        ]
+      },
+      {
+        "Guides": [
+          "guides/proxy",
+          "guides/custom-domains",
+          "guides/bring-your-user-interface",
+          "guides/create-personal-access-token",
+          "guides/customize-identity-schema"
+        ]
+      },
+      {
+        "Concepts": [
+          "concepts/terminology",
+          "concepts/project",
+          "concepts/managed-ui",
+          "concepts/identity",
+          "concepts/services-api",
+          "concepts/personal-access-token",
+          "concepts/self-service",
+          "concepts/redirects",
+          "concepts/session",
+          "ecosystem/api-design"
+        ]
+      },
+      "reference/api",
+      {
+        "Reference": [
+          {
+            "Command Line Interface (CLI)": [
+              "cli/ory",
+              "cli/ory-proxy",
+              "cli/ory-version"
+            ]
+          }
+        ]
+      },
+      "cloud/developer",
+      "cloud/cloud-roadmap"
+    ]
+  },
+  {
+    "Open Source Overview": [
+      "open-source",
+      "ecosystem/community",
+      "ecosystem/projects",
+      "ecosystem/versioning",
+      "ecosystem/configuring",
+      "ecosystem/deployment",
+      "ecosystem/upgrading",
+      "ecosystem/logging",
+      "ecosystem/contributing",
+      "ecosystem/sqa",
+      "ecosystem/roadmap",
+      "ecosystem/software-architecture-philosophy"
+    ]
+  }
+]
