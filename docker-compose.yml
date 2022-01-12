@@ -3,6 +3,8 @@ version: "3.7"
 networks:
   backend:
     driver: bridge
+  frontend:
+    driver: bridge
 
 services:
   oauth-proxy:
@@ -12,9 +14,12 @@ services:
       - --config
       - /config.yaml
       - serve
+    networks:
+      - frontend
     ports:
-      - "4455:4455"
-      - "4456:4456"
+      - "4455"
+      - "4456"
+
   nginx-proxy:
     build:
       context: ./proxy
@@ -24,7 +29,7 @@ services:
       - kratos
       - frontend
     networks:
-      - backend
+      - frontend
 
   kratos:
     build:
@@ -32,10 +37,25 @@ services:
     depends_on:
       - database
     networks:
+      - frontend
       - backend
     ports:
       - "4434"
       - "4433"
+
+  backend:
+    image: node:14
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    entrypoint:
+      - node
+      - app
+    ports:
+      - "3355"
+    networks:
+      - frontend
+      - backend
 
   frontend:
     image: node:14
@@ -47,7 +67,7 @@ services:
       - run
       - serve
     networks:
-      - backend
+      - frontend
     ports:
       - "8080"
 

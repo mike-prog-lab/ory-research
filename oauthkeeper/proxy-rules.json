@@ -3,10 +3,10 @@
     "id": "allow-anonymous-with-header-mutator",
     "version": "v0.36.0-beta.4",
     "upstream": {
-      "url": "https://httpbin.org/anything/header"
+      "url": "http://frontend:8080"
     },
     "match": {
-      "url": "http://<127.0.0.1|localhost>:4455/anything/header",
+      "url": "http://ui.my-app.com:4455/<.*>",
       "methods": [
         "GET"
       ]
@@ -34,10 +34,10 @@
     "id": "deny-anonymous",
     "version": "v0.36.0-beta.4",
     "upstream": {
-      "url": "https://httpbin.org/anything/deny"
+      "url": "http://backend:3355"
     },
     "match": {
-      "url": "http://<127.0.0.1|localhost>:4455/anything/deny",
+      "url": "http://oauth-proxy:4455/<.*>",
       "methods": [
         "GET"
       ]
@@ -48,7 +48,7 @@
       }
     ],
     "authorizer": {
-      "handler": "deny"
+      "handler": "allow"
     },
     "mutators": [
       {

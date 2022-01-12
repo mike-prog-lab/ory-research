@@ -1,14 +1,15 @@
-version: v0.8.2-alpha.1
+version: v0.8.0-alpha.3
 
 dsn: postgres://localuser:password@database:5432/wawed?sslmode=disable&max_conns=20
 
 serve:
   public:
-    base_url: http://ui.my-app.com:8081/.ory
+    base_url: http://ui.my-app.com:8081/.kratos
     cors:
       enabled: true
       allowed_origins:
-        - http://*.my-app.com:8081
+        - http://ui.my-app.com:8081
+        - http://api.my-app.com:8081
       allowed_methods:
         - GET
         - POST
@@ -17,11 +18,13 @@ serve:
         - Cookie
         - Content-Type
         - X-Content-Type-Options
+        - X-Real-IP
+        - Host
       exposed_headers:
         - Content-Type
         - Set-Cookie
   admin:
-    base_url: http://ui.my-app.com:4434/.ory
+    base_url: http://ui.my-app.com:4434/.kratos
 
 selfservice:
   default_browser_return_url: http://ui.my-app.com:8081/
@@ -61,6 +64,14 @@ selfservice:
     registration:
       lifespan: 10m
       ui_url: http://ui.my-app.com:8081/registration
+      after:
+        hooks:
+          - hook: web_hook
+            config:
+              url: http://backend:3355/webhook
+              method: POST
+              body: file://bodies/registration_before.jsonnet
+
 #      after:
 #        password:
 #          default_browser_return_url: http://ui.my-app.com:8081/dashboard
@@ -94,4 +105,4 @@ courier:
 cookies:
   path: ''
   same_site: None
-  domain: 'ui.my-app.com'
+  domain: 'my-app.com'
