@@ -1,18 +1,23 @@
+
 <template>
+  <Dashboard />
 <!--  <Login />-->
-  <Signup />
+<!--  <Signup />-->
 <!--  <HelloWorld />-->
 </template>
 
 <script>
-// import Login from './components/Login.vue'
+/* eslint-disable vue/no-unused-components */
+import Login from './components/Login.vue'
+import Dashboard from './components/Dashboard.vue'
 import Signup from './components/Signup.vue'
 
 export default {
   name: 'App',
   components: {
-    // Login,
+    Login,
     Signup,
+    Dashboard,
   }
 }
 </script>

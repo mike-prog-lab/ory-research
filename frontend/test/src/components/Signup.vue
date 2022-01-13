@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     async loadForm() {
-      const response = await fetch('http://ui.my-app.com:8081/.kratos/self-service/registration/browser', { credentials: 'include', headers: { Accept: 'application/json' } });
+      const response = await fetch('http://api.my-app.com:4455/.kratos/self-service/registration/browser', { credentials: 'include', headers: { Accept: 'application/json' } });
       const { ui } = await response.json();
       this.form = ui || {};
     }

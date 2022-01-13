@@ -2,34 +2,36 @@ version: v0.8.0-alpha.3
 
 dsn: postgres://localuser:password@database:5432/wawed?sslmode=disable&max_conns=20
 
+dev: true
+
 serve:
   public:
-    base_url: http://ui.my-app.com:8081/.kratos
-    cors:
-      enabled: true
-      allowed_origins:
-        - http://ui.my-app.com:8081
-        - http://api.my-app.com:8081
-      allowed_methods:
-        - GET
-        - POST
-      allowed_headers:
-        - Authorization
-        - Cookie
-        - Content-Type
-        - X-Content-Type-Options
-        - X-Real-IP
-        - Host
-      exposed_headers:
-        - Content-Type
-        - Set-Cookie
+    base_url: http://api.my-app.com:4455/.kratos
+#    cors:
+#      enabled: true
+#      allowed_origins:
+#        - http://ui.my-app.com:4455
+#        - http://api.my-app.com:4455
+#      allowed_methods:
+#        - GET
+#        - POST
+#      allowed_headers:
+#        - Authorization
+#        - Cookie
+#        - Content-Type
+#        - X-Content-Type-Options
+#        - X-Forwarded-For
+#        - Host
+#      exposed_headers:
+#        - Content-Type
+#        - Set-Cookie
   admin:
-    base_url: http://ui.my-app.com:4434/.kratos
+    base_url: http://api.my-app.com:4434/.kratos
 
 selfservice:
-  default_browser_return_url: http://ui.my-app.com:8081/
+  default_browser_return_url: http://ui.my-app.com:4455/
   whitelisted_return_urls:
-    - http://ui.my-app.com:8081
+    - http://ui.my-app.com:4455
 
   methods:
     password:
@@ -37,33 +39,40 @@ selfservice:
 
   flows:
     error:
-      ui_url: http://ui.my-app.com:8081/error
+      ui_url: http://ui.my-app.com:4455/error
 
     settings:
-      ui_url: http://ui.my-app.com:8081/settings
+      ui_url: http://ui.my-app.com:4455/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: http://ui.my-app.com:8081/recovery
+      ui_url: http://ui.my-app.com:4455/recovery
 
     verification:
       enabled: true
-      ui_url: http://ui.my-app.com:8081/verification
+      ui_url: http://ui.my-app.com:4455/verification
       after:
-        default_browser_return_url: http://ui.my-app.com:8081/
+        default_browser_return_url: http://ui.my-app.com:4455/
 
     logout:
       after:
-        default_browser_return_url: http://ui.my-app.com:8081/login
+        default_browser_return_url: http://ui.my-app.com:4455/login
 
     login:
-      ui_url: http://ui.my-app.com:8081/login
+      ui_url: http://ui.my-app.com:4455/login
       lifespan: 10m
+      after:
+        hooks:
+          - hook: web_hook
+            config:
+              url: http://backend:3355/webhook
+              method: POST
+              body: file://bodies/registration_before.jsonnet
 
     registration:
       lifespan: 10m
-      ui_url: http://ui.my-app.com:8081/registration
+      ui_url: http://ui.my-app.com:4455/registration
       after:
         hooks:
           - hook: web_hook
@@ -74,7 +83,7 @@ selfservice:
 
 #      after:
 #        password:
-#          default_browser_return_url: http://ui.my-app.com:8081/dashboard
+#          default_browser_return_url: http://ui.my-app.com:4455/dashboard
 #          hooks:
 #            - hook: session
 
@@ -104,5 +113,5 @@ courier:
 
 cookies:
   path: ''
-  same_site: None
+  same_site: Strict
   domain: 'my-app.com'

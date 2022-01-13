@@ -1,8 +1,24 @@
 serve:
   proxy:
-    port: 4455 # run the proxy at port 4455
+    port: 4455
+    cors:
+      enabled: true
+      debug: true
+      allowed_origins:
+        - http://ui.my-app.com:4455
+      allowed_headers:
+        - Authorization
+        - Cookie
+        - Content-Type
+        - X-Content-Type-Options
+        - X-Forwarded-For
+        - Origin
+      exposed_headers:
+        - Content-Type
+        - Set-Cookie
+      allow_credentials: true
   api:
-    port: 4456 # run the api at port 4456
+    port: 4456
 
 access_rules:
   repositories:
@@ -49,3 +65,12 @@ authenticators:
     enabled: true
     config:
       subject: guest
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: http://kratos:4433/sessions/whoami
+      preserve_path: true
+      extra_from: '@this'
+      subject_from: 'identity.id'
+      only:
+        - ory_kratos_session

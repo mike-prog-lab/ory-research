@@ -14,6 +14,9 @@
     "authenticators": [
       {
         "handler": "anonymous"
+      },
+      {
+        "handler": "cookie_session"
       }
     ],
     "authorizer": {
@@ -21,25 +24,21 @@
     },
     "mutators": [
       {
-        "handler": "header",
-        "config": {
-          "headers": {
-            "X-User": "{{ print .Subject }}"
-          }
-        }
+        "handler": "header"
       }
     ]
   },
   {
-    "id": "deny-anonymous",
+    "id": "allow-anonymous-kratos-access",
     "version": "v0.36.0-beta.4",
     "upstream": {
-      "url": "http://backend:3355"
+      "url": "http://kratos-proxy:8081"
     },
     "match": {
-      "url": "http://oauth-proxy:4455/<.*>",
+      "url": "http://kratos.my-app.com:4455/<.*>",
       "methods": [
-        "GET"
+        "GET",
+        "POST"
       ]
     },
     "authenticators": [
@@ -94,17 +93,22 @@
     "id": "allow-anonymous-with-id-token-mutator",
     "version": "v0.36.0-beta.4",
     "upstream": {
-      "url": "https://httpbin.org/anything/id_token"
+      "url": "http://backend:3355"
     },
     "match": {
-      "url": "http://<127.0.0.1|localhost>:4455/anything/id_token",
+      "url": "http://api.my-app.com:4455/<.*>",
       "methods": [
-        "GET"
+        "GET",
+        "POST",
+        "DELETE",
+        "OPTIONS",
+        "PATCH",
+        "PUT"
       ]
     },
     "authenticators": [
       {
-        "handler": "anonymous"
+        "handler": "cookie_session"
       }
     ],
     "authorizer": {
@@ -112,7 +116,7 @@
     },
     "mutators": [
       {
-        "handler": "id_token"
+        "handler": "header"
       }
     ]
   }
