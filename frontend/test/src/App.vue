@@ -1,8 +1,8 @@
 
 <template>
-  <Dashboard />
-<!--  <Login />-->
-<!--  <Signup />-->
+  <!-- <Dashboard /> -->
+<!-- <Login />-->
+  <Signup />
 <!--  <HelloWorld />-->
 </template>
 
@@ -12,6 +12,7 @@ import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import Signup from './components/Signup.vue'
 
+// loki@localhost
 export default {
   name: 'App',
   components: {

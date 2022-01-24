@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
       <h1>Signup</h1>
-      <form :action="form.action" method="post">
+      <form :action="form.action" :method="form.method">
         <template v-for="(node, idx) in form.nodes" :key="node.group + idx">
           <div>
             <template v-if="node.meta && node.meta.label">
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     async loadForm() {
-      const response = await fetch('http://api.my-app.com:4455/.kratos/self-service/registration/browser', { credentials: 'include', headers: { Accept: 'application/json' } });
+      const response = await fetch('http://localhost:4455/.kratos/self-service/registration/browser', { credentials: 'include', headers: { Accept: 'application/json' } });
       const { ui } = await response.json();
       this.form = ui || {};
     }

@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     async loadForm() {
-      const response = await fetch('http://api.my-app.com:4455/dashboard', { credentials: 'include', headers: { Accept: 'application/json' } });
+      const response = await fetch('http://localhost:8090/v3/profile', { credentials: 'include', headers: { Accept: 'application/json' } });
       const data = await response.json();
       this.user = data.user || {};
 
